@@ -137,7 +137,7 @@ if (empty($reshook))
     		else $backtopage = DOL_URL_ROOT.'/mrp/mo_card.php?id='.($id > 0 ? $id : '__ID__');
     	}
     }
-    if ($cancel && ! empty($backtopageforcancel)) {
+    if ($cancel && !empty($backtopageforcancel)) {
     	$backtopage = $backtopageforcancel;
     }
 
@@ -287,7 +287,7 @@ if ($action == 'create')
 	print '</div>';
 
 	if (GETPOST('fk_bom', 'int') > 0) {
-		print load_fiche_titre($langs->trans("ToConsume").' ('.$langs->trans("ForAQuantityOf1").')');
+		print load_fiche_titre($langs->trans("ToConsume"));
 
 		print '<div class="div-table-responsive-no-min">';
 		print '<table class="noborder centpercent">';
@@ -523,7 +523,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     		if (!empty($object->lines))
     		{
     			$i = 0;
-    			foreach($object->lines as $line) {
+    			foreach ($object->lines as $line) {
     				if ($line->role == 'toconsume') {
     					if ($i) print ', ';
     					$tmpproduct = new Product($db);
@@ -542,7 +542,7 @@ if ($object->id > 0 && (empty($action) || ($action != 'edit' && $action != 'crea
     		if (!empty($object->lines))
     		{
     			$i = 0;
-    			foreach($object->lines as $line) {
+    			foreach ($object->lines as $line) {
     				if ($line->role == 'toproduce') {
     					if ($i) print ', ';
     					$tmpproduct = new Product($db);

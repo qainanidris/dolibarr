@@ -46,7 +46,7 @@ class mod_pacific extends ModeleNumRefFicheinter
 	/**
 	 * @var string Nom du modele
 	 * @deprecated
-	 * @see name
+	 * @see $name
 	 */
 	public $nom='pacific';
 
@@ -78,8 +78,8 @@ class mod_pacific extends ModeleNumRefFicheinter
 	}
 
 	/**
-	 *  Checks if the numbers already in force in the data base do not
-	 *  cause conflicts that would prevent this numbering from working.
+	 *  Checks if the numbers already in the database do not
+	 *  cause conflicts that would prevent this numbering working.
 	 *
 	 *  @return     boolean     false if conflict, true if ok
 	 */

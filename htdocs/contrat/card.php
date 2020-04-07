@@ -317,7 +317,7 @@ if (empty($reshook))
 								$array_options = array();
 								// For avoid conflicts if trigger used
 								if (empty($conf->global->MAIN_EXTRAFIELDS_DISABLED) && method_exists($lines[$i], 'fetch_optionals')) {
-									$lines[$i]->fetch_optionals($lines[$i]->rowid);
+									$lines[$i]->fetch_optionals();
 									$array_options = $lines[$i]->array_options;
 								}
 
@@ -724,7 +724,7 @@ if (empty($reshook))
 
 			if (is_array($array_options) && count($array_options) > 0) {
 				// We replace values in this->line->array_options only for entries defined into $array_options
-				foreach($array_options as $key => $value) {
+				foreach ($array_options as $key => $value) {
 					$objectline->array_options[$key] = $array_options[$key];
 				}
 			}
@@ -1128,12 +1128,12 @@ if ($action == 'create')
 
 			$classname = ucfirst($subelement);
 			$objectsrc = new $classname($db);
-			$objectsrc->fetch(GETPOST('originid'));
+			$objectsrc->fetch($originid);
 			if (empty($objectsrc->lines) && method_exists($objectsrc, 'fetch_lines'))  $objectsrc->fetch_lines();
 			$objectsrc->fetch_thirdparty();
 
 			// Replicate extrafields
-			$objectsrc->fetch_optionals($originid);
+			$objectsrc->fetch_optionals();
 			$object->array_options = $objectsrc->array_options;
 
 			$projectid = (!empty($objectsrc->fk_project) ? $objectsrc->fk_project : '');
@@ -1703,8 +1703,9 @@ else
 					// Display lines extrafields
 					if (is_array($extralabelslines) && count($extralabelslines) > 0) {
 						$line = new ContratLigne($db);
-						$line->fetch_optionals($objp->rowid);
-						print $line->showOptionals($extrafields, 'view', array('style'=>'class="oddeven"', 'colspan'=>$colspan), '', '', empty($conf->global->MAIN_EXTRAFIELDS_IN_ONE_TD) ? 0 : 1);
+						$line->id = $objp->rowid;
+						$line->fetch_optionals();
+						print $line->showOptionals($extrafields, 'view', array('style'=>'class="oddeven"', 'colspan'=>$colspan), '', '', 1);
 					}
 				}
 				// Line in mode update
@@ -1793,8 +1794,9 @@ else
 
 					if (is_array($extralabelslines) && count($extralabelslines) > 0) {
 						$line = new ContratLigne($db);
-						$line->fetch_optionals($objp->rowid);
-						print $line->showOptionals($extrafields, 'edit', array('style'=>'class="oddeven"', 'colspan'=>$colspan), '', '', empty($conf->global->MAIN_EXTRAFIELDS_IN_ONE_TD) ? 0 : 1);
+						$line->id = $objp->rowid;
+						$line->fetch_optionals();
+						print $line->showOptionals($extrafields, 'edit', array('style'=>'class="oddeven"', 'colspan'=>$colspan), '', '', 1);
 					}
 				}
 

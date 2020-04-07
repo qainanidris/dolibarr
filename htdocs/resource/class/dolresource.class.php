@@ -146,17 +146,12 @@ class Dolresource extends CommonObject
     		}
     	}
 
-    	if (!$error)
+    	if (!$error && !$notrigger)
     	{
-    		if (!$notrigger)
-    		{
-    			//// Call triggers
-    			include_once DOL_DOCUMENT_ROOT.'/core/class/interfaces.class.php';
-    			$interface = new Interfaces($this->db);
-    			$result = $interface->run_triggers('RESOURCE_CREATE', $this, $user, $langs, $conf);
-    			if ($result < 0) { $error++; $this->errors = $interface->errors; }
-    			//// End call triggers
-    		}
+    		// Call trigger
+    		$result = $this->call_trigger('RESOURCE_CREATE', $user);
+    		if ($result < 0) $error++;
+    		// End call triggers
     	}
 
     	// Commit or rollback
@@ -958,7 +953,7 @@ class Dolresource extends CommonObject
         	$label.= '<br><b>' . $langs->trans("Status").":</b> ".$this->getLibStatut(5);
         }*/
         if (isset($this->type_label)) {
-        	$label.= '<br><b>' . $langs->trans("ResourceType").":</b> ".$this->type_label;
+        	$label .= '<br><b>'.$langs->trans("ResourceType").":</b> ".$this->type_label;
         }
 
         $url = DOL_URL_ROOT.'/resource/card.php?id='.$this->id;

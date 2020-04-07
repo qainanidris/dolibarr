@@ -83,7 +83,7 @@ $search_status = GETPOST('search_status', 'int');
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 if (!$sortorder) $sortorder = 'DESC';
@@ -102,7 +102,7 @@ if (($id > 0 || $ref) && $action != 'create' && $action != 'add')
 }
 
 // Initialize technical object to manage hooks of page. Note that conf->hooks_modules contains array of hook context
-$hookmanager->initHooks(array('invoicereccard', 'globalcard'));
+$hookmanager->initHooks(array('invoicereclist'));
 $extrafields = new ExtraFields($db);
 
 // fetch optionals attributes and labels
@@ -536,21 +536,21 @@ if ($resql)
 			}
 			if (!empty($arrayfields['f.total']['checked']))
 			{
-			    print '<td class="right">'.price($objp->total).'</td>'."\n";
+			    print '<td class="nowrap right">'.price($objp->total).'</td>'."\n";
 			    if (!$i) $totalarray['nbfield']++;
 			    if (!$i) $totalarray['pos'][$totalarray['nbfield']] = 'f.total';
 			    $totalarray['val']['f.total'] += $objp->total;
 			}
 			if (!empty($arrayfields['f.tva']['checked']))
 			{
-			    print '<td class="right">'.price($objp->total_vat).'</td>'."\n";
+			    print '<td class="nowrap right">'.price($objp->total_vat).'</td>'."\n";
 			    if (!$i) $totalarray['nbfield']++;
 			    if (!$i) $totalarray['pos'][$totalarray['nbfield']] = 'f.tva';
 			    $totalarray['val']['f.tva'] += $objp->total_vat;
 			}
 			if (!empty($arrayfields['f.total_ttc']['checked']))
 			{
-			    print '<td class="right">'.price($objp->total_ttc).'</td>'."\n";
+			    print '<td class="nowrap right">'.price($objp->total_ttc).'</td>'."\n";
 			    if (!$i) $totalarray['nbfield']++;
 			    if (!$i) $totalarray['pos'][$totalarray['nbfield']] = 'f.total_ttc';
 			    $totalarray['val']['f.total_ttc'] += $objp->total_ttc;

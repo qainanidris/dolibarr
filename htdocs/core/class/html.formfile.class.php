@@ -125,7 +125,7 @@ class FormFile
     			$out .= '<input type="hidden" name="sortorder" value="'.GETPOST('sortorder', 'aZ09').'">';
 			}
 
-			$out .= '<table width="100%" class="nobordernopadding">';
+			$out .= '<table class="nobordernopadding cenpercent">';
 			$out .= '<tr>';
 
 			if (!empty($options)) $out .= '<td>'.$options.'</td>';
@@ -168,7 +168,7 @@ class FormFile
 				$out .= '<input type="hidden" name="max_file_size" value="'.($maxmin * 1024).'">';
 			}
 
-			$out .= '<input class="flat minwidth400" type="file"';
+			$out .= '<input class="flat minwidth400 maxwidth200onsmartphone" type="file"';
 			$out .= ((!empty($conf->global->MAIN_DISABLE_MULTIPLE_FILEUPLOAD) || $conf->browser->layout != 'classic') ? ' name="userfile"' : ' name="userfile[]" multiple');
 			$out .= (empty($conf->global->MAIN_UPLOAD_DOC) || empty($perm) ? ' disabled' : '');
 			$out .= (!empty($accept) ? ' accept="'.$accept.'"' : ' accept=""');
@@ -325,7 +325,7 @@ class FormFile
 	 * 		@param		int					$notused	        Not used
 	 * 		@param		integer				$noform				Do not output html form tags
 	 * 		@param		string				$param				More param on http links
-	 * 		@param		string				$title				Title to show on top of form
+	 * 		@param		string				$title				Title to show on top of form. Example: '' (Default to "Documents") or 'none'
 	 * 		@param		string				$buttonlabel		Label on submit button
 	 * 		@param		string				$codelang			Default language code to use on lang combo box if multilang is enabled
 	 * 		@param		string				$morepicto			Add more HTML content into cell with picto
@@ -408,7 +408,7 @@ class FormFile
 		}
 
 		$titletoshow = $langs->trans("Documents");
-		if (!empty($title)) $titletoshow = $title;
+		if (!empty($title)) $titletoshow = ($title == 'none' ? '' : $title);
 
 		// Show table
 		if ($genallowed)
@@ -1387,7 +1387,7 @@ class FormFile
 							if ($permtoeditline)
 							{
 								$paramsectiondir = (in_array($modulepart, array('medias', 'ecm')) ? '&section_dir='.urlencode($relativepath) : '');
-								print '<a href="'.(($useinecm == 1 || $useinecm == 5) ? '#' : ($url.'?action=editfile&urlfile='.urlencode($filepath).$paramsectiondir.$param)).'" class="editfilelink" rel="'.$filepath.'">'.img_edit('default', 0, 'class="paddingrightonly"').'</a>';
+								print '<a class="editfielda" href="'.(($useinecm == 1 || $useinecm == 5) ? '#' : ($url.'?action=editfile&urlfile='.urlencode($filepath).$paramsectiondir.$param)).'" class="editfilelink" rel="'.$filepath.'">'.img_edit('default', 0, 'class="paddingrightonly"').'</a>';
 							}
 						}
 						if ($permonobject)
@@ -1879,9 +1879,9 @@ class FormFile
 				print '<td class="center">'.dol_print_date($link->datea, "dayhour", "tzuser").'</td>';
 				print '<td class="center"></td>';
 				print '<td class="right">';
-				print '<a href="'.$_SERVER['PHP_SELF'].'?action=update&linkid='.$link->id.$param.'" class="editfilelink reposition" >'.img_edit().'</a>'; // id= is included into $param
+				print '<a href="'.$_SERVER['PHP_SELF'].'?action=update&linkid='.$link->id.$param.'" class="editfilelink editfielda reposition" >'.img_edit().'</a>'; // id= is included into $param
 				if ($permissiontodelete) {
-					print ' &nbsp; <a href="'.$_SERVER['PHP_SELF'].'?action=delete&linkid='.$link->id.$param.'" class="deletefilelink">'.img_delete().'</a>'; // id= is included into $param
+					print ' &nbsp; <a class="deletefilelink" href="'.$_SERVER['PHP_SELF'].'?action=delete&linkid='.$link->id.$param.'">'.img_delete().'</a>'; // id= is included into $param
 				} else {
 					print '&nbsp;';
 				}

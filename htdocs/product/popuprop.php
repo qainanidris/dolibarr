@@ -42,7 +42,7 @@ $result=restrictedArea($user, 'produit|service');
 $limit = GETPOST('limit', 'int')?GETPOST('limit', 'int'):$conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 if (! $sortfield) $sortfield="c";
 if (! $sortorder) $sortorder="DESC";
@@ -61,15 +61,15 @@ $staticproduct=new Product($db);
 $helpurl='';
 if ($type == '0')
 {
-    $helpurl='EN:Module_Products|FR:Module_Produits|ES:M&oacute;dulo_Productos';
+	$helpurl='EN:Module_Products|FR:Module_Produits|ES:M&oacute;dulo_Productos';
 }
 elseif ($type == '1')
 {
-    $helpurl='EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
+	$helpurl='EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
 }
 else
 {
-    $helpurl='EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
+	$helpurl='EN:Module_Services_En|FR:Module_Services|ES:M&oacute;dulo_Servicios';
 }
 $title=$langs->trans("Statistics");
 
@@ -99,9 +99,14 @@ $head[$h][1] = $langs->trans("Chart");
 $head[$h][2] = 'chart';
 $h++;
 
-$head[$h][0] = $_SERVER['PHP_SELF'];
-$head[$h][1] = $title;
+$head[$h][0] = DOL_URL_ROOT.'/product/popuprop.php';
+$head[$h][1] = $langs->trans("PopuProp");
 $head[$h][2] = 'popularityprop';
+$h++;
+
+$head[$h][0] = DOL_URL_ROOT.'/product/popucom.php';
+$head[$h][1] = $langs->trans("PopuCom");
+$head[$h][2] = 'popularitycommande';
 $h++;
 
 dol_fiche_head($head, 'popularityprop', $langs->trans("Statistics"), -1);
@@ -125,7 +130,7 @@ $sql.= " GROUP BY p.rowid, p.label, p.ref, p.fk_product_type";
 $result=$db->query($sql);
 if ($result)
 {
-    $totalnboflines = $db->num_rows($result);
+	$totalnboflines = $db->num_rows($result);
 }
 
 $sql.= $db->order($sortfield, $sortorder);
@@ -134,23 +139,23 @@ $sql.= $db->plimit($limit+1, $offset);
 $resql=$db->query($sql);
 if ($resql)
 {
-    $num = $db->num_rows($resql);
-    $i = 0;
+	$num = $db->num_rows($resql);
+	$i = 0;
 
-    while ($i < $num)
-    {
-        $objp = $db->fetch_object($resql);
+	while ($i < $num)
+	{
+		$objp = $db->fetch_object($resql);
 
-        $infoprod[$objp->rowid]=array('type'=>$objp->type, 'ref'=>$objp->ref, 'label'=>$objp->label);
-        $infoprod[$objp->rowid]['nblineproposal']=$objp->c;
+		$infoprod[$objp->rowid]=array('type'=>$objp->type, 'ref'=>$objp->ref, 'label'=>$objp->label);
+		$infoprod[$objp->rowid]['nblineproposal']=$objp->c;
 
-        $i++;
-    }
-    $db->free($resql);
+		$i++;
+	}
+	$db->free($resql);
 }
 else
 {
-    dol_print_error($db);
+	dol_print_error($db);
 }
 //var_dump($infoprod);
 

@@ -57,7 +57,7 @@ if (!empty($conf->accounting->enabled)) $result = restrictedArea($user, 'account
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -246,7 +246,7 @@ if ($modecompta == 'BOOKKEEPING')
 	$sql .= " AND f.entity = ".$conf->entity;
 	if (!empty($date_start) && !empty($date_end))
 		$sql .= " AND f.doc_date >= '".$db->idate($date_start)."' AND f.doc_date <= '".$db->idate($date_end)."'";
-	$sql .= " GROUP BY pcg_type, pcg_subtype, name, socid";
+	$sql .= " GROUP BY pcg_type, name, socid";
 	$sql .= $db->order($sortfield, $sortorder);
 
 	$oldpcgtype = '';

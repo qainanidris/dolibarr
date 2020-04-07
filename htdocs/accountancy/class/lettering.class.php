@@ -76,6 +76,7 @@ class Lettering extends BookKeeping
 
 		$sql .= " ) AND (bk.date_lettering ='' OR bk.date_lettering IS NULL) ";
 		$sql .= "  AND (bk.lettering_code != '' OR bk.lettering_code IS NULL) ";
+		$sql .= ' AND bk.date_validated IS NULL ';
 		$sql .= $this->db->order('bk.doc_date', 'DESC');
 
 		// echo $sql;
@@ -229,7 +230,7 @@ class Lettering extends BookKeeping
 	 *
 	 * @param array $ids ids array
 	 * @param boolean $notrigger no trigger
- 	 * @return number
+	 * @return number
 	 */
 	public function updateLettering($ids = array(), $notrigger = false)
 	{
@@ -253,7 +254,7 @@ class Lettering extends BookKeeping
 		}
 
 		$sql = "SELECT SUM(ABS(debit)) as deb, SUM(ABS(credit)) as cred FROM " . MAIN_DB_PREFIX . "accounting_bookkeeping WHERE ";
-		$sql .= " rowid IN (" . implode(',', $ids) . ") ";
+		$sql .= " rowid IN (" . implode(',', $ids) . ") AND date_validated IS NULL ";
 		$result = $this->db->query($sql);
 		if ($result) {
 			$obj = $this->db->fetch_object($result);
@@ -275,7 +276,7 @@ class Lettering extends BookKeeping
 			$sql = "UPDATE " . MAIN_DB_PREFIX . "accounting_bookkeeping SET";
 			$sql .= " lettering_code='" . $lettre . "'";
 			$sql .= " , date_lettering = '" . $this->db->idate($now) . "'"; // todo correct date it's false
-			$sql .= "  WHERE rowid IN (" . implode(',', $ids) . ") ";
+			$sql .= "  WHERE rowid IN (" . implode(',', $ids) . ") AND date_validated IS NULL ";
 			$this->db->begin();
 
 			dol_syslog(get_class($this) . "::update sql=" . $sql, LOG_DEBUG);
@@ -286,19 +287,6 @@ class Lettering extends BookKeeping
 			}
 		}
 
-		if (! $error) {
-			if (! $notrigger) {
-				// Uncomment this and change MYOBJECT to your own tag if you
-				// want this action calls a trigger.
-
-				// // Call triggers
-				// include_once DOL_DOCUMENT_ROOT . '/core/class/interfaces.class.php';
-				// $interface=new Interfaces($this->db);
-				// $result=$interface->run_triggers('MYOBJECT_MODIFY',$this,$user,$langs,$conf);
-				// if ($result < 0) { $error++; $this->errors=$interface->errors; }
-				// // End call triggers
-			}
-		}
 		// Commit or rollback
 		if ($error) {
 			foreach ($this->errors as $errmsg) {

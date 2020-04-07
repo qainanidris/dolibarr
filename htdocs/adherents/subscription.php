@@ -49,7 +49,7 @@ $typeid = GETPOST('typeid', 'int');
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST('sortfield', 'alpha');
 $sortorder = GETPOST('sortorder', 'alpha');
-$page = GETPOST('page', 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -531,7 +531,7 @@ if ($rowid > 0)
 	{
 		print '<tr><td>'.$langs->trans("Categories").'</td>';
 		print '<td colspan="2">';
-		print $form->showCategories($object->id, 'member', 1);
+		print $form->showCategories($object->id, Categorie::TYPE_MEMBER, 1);
 		print '</td></tr>';
 	}
 

@@ -50,7 +50,7 @@ $status				= GETPOST('status', 'alpha');
 $limit = GETPOST('limit', 'int') ?GETPOST('limit', 'int') : $conf->liste_limit;
 $sortfield = GETPOST("sortfield", 'alpha');
 $sortorder = GETPOST("sortorder", 'alpha');
-$page = GETPOST("page", 'int');
+$page = GETPOSTISSET('pageplusone') ? (GETPOST('pageplusone') - 1) : GETPOST("page", 'int');
 if (empty($page) || $page == -1) { $page = 0; }     // If $page is not defined, or '' or -1
 $offset = $limit * $page;
 $pageprev = $page - 1;
@@ -65,7 +65,7 @@ $subscription = GETPOST("subscription", "int");
 $duration_value = GETPOST('duration_value', 'int');
 $duration_unit = GETPOST('duration_unit', 'alpha');
 $vote = GETPOST("vote", "int");
-$comment = GETPOST("comment", 'alphanohtml');
+$comment = GETPOST("comment", 'none');
 $mail_valid = GETPOST("mail_valid", 'none');
 
 // Security check
@@ -297,7 +297,7 @@ if (!$rowid && $action != 'create' && $action != 'edit')
 			print '<td class="center">'.yn($objp->vote).'</td>';
 			print '<td class="center">'.$membertype->getLibStatut(5).'</td>';
 			if ($user->rights->adherent->configurer)
-				print '<td class="right"><a href="'.$_SERVER["PHP_SELF"].'?action=edit&rowid='.$objp->rowid.'">'.img_edit().'</a></td>';
+				print '<td class="right"><a class="editfielda" href="'.$_SERVER["PHP_SELF"].'?action=edit&rowid='.$objp->rowid.'">'.img_edit().'</a></td>';
 			else
 				print '<td class="right">&nbsp;</td>';
 			print "</tr>";
@@ -364,7 +364,9 @@ if ($action == 'create')
 	print '</td></tr>';
 
 	print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td>';
-	print '<textarea name="comment" wrap="soft" class="centpercent" rows="3"></textarea></td></tr>';
+	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
+	$doleditor = new DolEditor('comment', $object->note, '', 280, 'dolibarr_notes', '', false, true, $conf->fckeditor->enabled, 15, '90%');
+	$doleditor->Create();
 
 	print '<tr><td class="tdtop">'.$langs->trans("WelcomeEMail").'</td><td>';
 	require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
@@ -790,7 +792,7 @@ if ($rowid > 0)
         $morphys["phy"] = $langs->trans("Physical");
         $morphys["mor"] = $langs->trans("Moral");
         print '<tr><td><span>'.$langs->trans("MemberNature").'</span></td><td>';
-        print $form->selectarray("morphy", $morphys, isset($_POST["morphy"]) ? $_POST["morphy"] : $object->morphy);
+        print $form->selectarray("morphy", $morphys, GETPOSTISSET("morphy") ? GETPOST("morphy") : $object->morphy);
         print "</td></tr>";
 
     	print '<tr><td>'.$langs->trans("SubscriptionRequired").'</td><td>';
@@ -807,10 +809,12 @@ if ($rowid > 0)
 		print '</td></tr>';
 
 		print '<tr><td class="tdtop">'.$langs->trans("Description").'</td><td>';
-		print '<textarea name="comment" wrap="soft" class="centpercent" rows="3">'.$object->note.'</textarea></td></tr>';
+		require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
+		$doleditor = new DolEditor('comment', $object->note, '', 280, 'dolibarr_notes', '', false, true, $conf->fckeditor->enabled, 15, '90%');
+		$doleditor->Create();
+		print "</td></tr>";
 
 		print '<tr><td class="tdtop">'.$langs->trans("WelcomeEMail").'</td><td>';
-		require_once DOL_DOCUMENT_ROOT.'/core/class/doleditor.class.php';
 		$doleditor = new DolEditor('mail_valid', $object->mail_valid, '', 280, 'dolibarr_notes', '', false, true, $conf->fckeditor->enabled, 15, '90%');
 		$doleditor->Create();
 		print "</td></tr>";

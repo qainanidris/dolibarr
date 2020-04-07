@@ -231,8 +231,8 @@ ErrorAddAtLeastOneLineFirst=Ajouter d'abord au moins une ligne
 ErrorRecordAlreadyInAccountingDeletionNotPossible=Erreur, l'enregistrement est déjà transféré dans la comptabilité, la suppression n'est pas possible.
 ErrorLanguageMandatoryIfPageSetAsTranslationOfAnother=Error, language is mandatory if you set the page as a translation of another one.
 ErrorLanguageOfTranslatedPageIsSameThanThisPage=Error, language of translated page is same than this one.
-ErrorBatchNoFoundForProductInWarehouse=No lot/serial found for product "%s" in warehouse "%s".
-ErrorBatchNoFoundEnoughQuantityForProductInWarehouse=No enough quantity for this lot/serial for product "%s" in warehouse "%s".
+ErrorBatchNoFoundForProductInWarehouse=Aucun lot trouvé pour le produit "%s" dans l'entrepôt "%s".
+ErrorBatchNoFoundEnoughQuantityForProductInWarehouse=Quantité insuffisante dans les lots pour le produit "%s" dans l'entepôt "%s".
 ErrorOnlyOneFieldForGroupByIsPossible=Only 1 field for the 'Group by' is possible (others are discarded)
 ErrorTooManyDifferentValueForSelectedGroupBy=Found too many different value (more than <b>%s</b>) for the field '<b>%s</b>', so we can't user it as a 'Group by' for graphics. The field 'Group By' has been removed. May be you wanted to use it as an X-Axis ?
 # Warnings

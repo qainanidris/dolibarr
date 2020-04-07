@@ -726,7 +726,7 @@ if (empty($reshook))
 	            $originLine = new $lineClassName($db);
 	            if (intval($fromElementid) > 0 && $originLine->fetch($lineId) > 0)
 	            {
-	                $originLine->fetch_optionals($lineId);
+	                $originLine->fetch_optionals();
 	                $desc = $originLine->desc;
 	                $pu_ht = $originLine->subprice;
 	                $qty = $originLine->qty;
@@ -1523,7 +1523,7 @@ if ($action == 'create')
 			$dateinvoice = (empty($dateinvoice) ? (empty($conf->global->MAIN_AUTOFILL_DATE) ?-1 : '') : $dateinvoice);
 
 			// Replicate extrafields
-			$objectsrc->fetch_optionals($originid);
+			$objectsrc->fetch_optionals();
 			$object->array_options = $objectsrc->array_options;
 
 			if (!empty($conf->multicurrency->enabled))
@@ -1893,7 +1893,7 @@ if ($action == 'create')
 	{
 		//Form to close proposal (signed or not)
 		$formquestion = array(
-			array('type' => 'select', 'name' => 'statut', 'label' => $langs->trans("CloseAs"), 'values' => array(2=>$object->LibStatut(Propal::STATUS_SIGNED), 3=>$object->LibStatut(Propal::STATUS_NOTSIGNED))),
+			array('type' => 'select', 'name' => 'statut', 'label' => '<span class="fieldrequired">'.$langs->trans("CloseAs").'</span>', 'values' => array(2=>$object->LibStatut(Propal::STATUS_SIGNED), 3=>$object->LibStatut(Propal::STATUS_NOTSIGNED))),
 			array('type' => 'text', 'name' => 'note_private', 'label' => $langs->trans("Note"), 'value' => '')				// Field to complete private note (not replace)
 		);
 

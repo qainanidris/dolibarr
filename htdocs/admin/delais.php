@@ -107,6 +107,10 @@ $modules = array(
 				array(
 						'code' => 'MAIN_DELAY_MEMBERS',
 						'img' => 'user'
+				),
+        array(
+						'code' => 'MAIN_DELAY_MEMBERS_SHIFT',
+						'img' => 'user'
 				)
 		),
 		'expensereport' => array(
@@ -203,7 +207,7 @@ llxHeader();
 
 print load_fiche_titre($langs->trans("DelaysOfToleranceBeforeWarning"), '', 'title_setup');
 
-print '<span class="opacitymedium">'.$langs->transnoentities("DelaysOfToleranceDesc", img_warning());
+print '<span class="opacitymedium">'.$langs->transnoentities("DelaysOfToleranceDesc", img_warning('default', '', 'pictowarning nopaddingleft'));
 print " ".$langs->trans("OnlyActiveElementsAreShown", DOL_URL_ROOT.'/admin/modules.php')."</span><br>\n";
 print "<br>\n";
 

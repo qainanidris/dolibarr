@@ -1,5 +1,5 @@
 <?php
-if (! defined('ISLOADEDBYSTEELSHEET')) die('Must be call by steelsheet'); ?>
+if (!defined('ISLOADEDBYSTEELSHEET')) die('Must be call by steelsheet'); ?>
 /* <style type="text/css" > */
 
 /*
@@ -64,15 +64,22 @@ if (! defined('ISLOADEDBYSTEELSHEET')) die('Must be call by steelsheet'); ?>
 	line-height: 90px;
 	background: rgba(0, 0, 0, 0.2);
 }
-.info-box-sm .info-box-icon{
+.info-box-sm .info-box-icon {
     height: 80px;
     width: 80px;
     font-size: 25px;
     line-height: 80px;
 }
+.info-box-module .info-box-icon {
+	height: 106px;
+}
 .info-box-icon > img {
 	max-width: 100%;
 }
+.info-box-module .info-box-icon > img {
+    max-width: 50%;
+}
+
 .info-box-icon-text{
     box-sizing: border-box;
     display: block;
@@ -92,13 +99,33 @@ if (! defined('ISLOADEDBYSTEELSHEET')) die('Must be call by steelsheet'); ?>
     transition: opacity 0.5s, visibility 0s 0.5s;
 }
 
-<?php if(empty($conf->global->MAIN_DISABLE_GLOBAL_BOXSTATS) && !empty($conf->global->MAIN_INCLUDE_GLOBAL_STATS_IN_OPENED_DASHBOARD)){ ?>
+.info-box-icon-version {
+    box-sizing: border-box;
+    display: block;
+    position: absolute;
+    width: 90px;
+    bottom: 0px;
+    color: #ffffff;
+    background-color: rgba(0,0,0,0.1);
+    cursor: default;
+
+    font-size: 10px;
+    line-height: 22px;
+    padding: 0px 3px;
+    text-align: center;
+    opacity: 1;
+    -webkit-transition: opacity 0.5s, visibility 0s 0.5s;
+    transition: opacity 0.5s, visibility 0s 0.5s;
+}
+
+
+<?php if (empty($conf->global->MAIN_DISABLE_GLOBAL_BOXSTATS) && !empty($conf->global->MAIN_INCLUDE_GLOBAL_STATS_IN_OPENED_DASHBOARD)) { ?>
 .info-box-icon-text{
     opacity: 1;
 }
 <?php } ?>
 
-.info-box-sm .info-box-icon-text{
+.info-box-sm .info-box-icon-text, .info-box-sm .info-box-icon-version{
     overflow: hidden;
     width: 80px;
 }
@@ -152,12 +179,12 @@ a.info-box-text{ text-decoration: none;}
 <?php
 include_once DOL_DOCUMENT_ROOT.'/core/lib/functions2.lib.php';
 
-$prefix='';
+$prefix = '';
 //$prefix = 'background-';
-if (! empty($conf->global->THEME_INFOBOX_COLOR_ON_BACKGROUND)) $prefix = 'background-';
+if (!empty($conf->global->THEME_INFOBOX_COLOR_ON_BACKGROUND)) $prefix = 'background-';
 
-if (! isset($conf->global->THEME_AGRESSIVENESS_RATIO) && $prefix) $conf->global->THEME_AGRESSIVENESS_RATIO=-50;
-if (GETPOSTISSET('THEME_AGRESSIVENESS_RATIO')) $conf->global->THEME_AGRESSIVENESS_RATIO=GETPOST('THEME_AGRESSIVENESS_RATIO', 'int');
+if (!isset($conf->global->THEME_AGRESSIVENESS_RATIO) && $prefix) $conf->global->THEME_AGRESSIVENESS_RATIO = -50;
+if (GETPOSTISSET('THEME_AGRESSIVENESS_RATIO')) $conf->global->THEME_AGRESSIVENESS_RATIO = GETPOST('THEME_AGRESSIVENESS_RATIO', 'int');
 //var_dump($conf->global->THEME_AGRESSIVENESS_RATIO);
 ?>
 .info-box-icon {
@@ -299,7 +326,7 @@ if (GETPOSTISSET('THEME_AGRESSIVENESS_RATIO')) $conf->global->THEME_AGRESSIVENES
 	flex-direction: row;
 	flex-wrap: wrap;
 	width: 100%;
-	margin: 0 0 0 -15px;
+	margin: 0 0 0 -8px;
 	/*justify-content: space-between;*/
 }
 
@@ -309,15 +336,33 @@ if (GETPOSTISSET('THEME_AGRESSIVENESS_RATIO')) $conf->global->THEME_AGRESSIVENES
 	flex-basis: auto;
 
 	width: 280px;
-	margin: 5px 0px 0px 15px;
+	margin: 5px 8px 0px 8px;
 }
 .box-flex-item.filler{
 	margin: 0px 0px 0px 15px !important;
 	height: 0;
 }
 
+.info-box-module {
+	min-width: 350px;
+    max-width: 350px;
+}
+.info-box-module .info-box-content {
+	height: 7em;
+}
 /* Disabled. This break the responsive on smartphone
 .box{
 	overflow: visible;
 }
 */
+
+@media only screen and (max-width: 767px)
+{
+	.box-flex-container {
+	    margin: 0 0 0 0 !important;
+	}
+
+	.info-box-module {
+		width: 280px;
+	}
+}
